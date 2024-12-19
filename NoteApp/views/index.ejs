@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="main w-full min-h-screen bg-zinc-900">
+        <div class="form p-10 text-white">
+            <form action="/create" method="POST">
+                <input 
+                    class="block px-5 py-2 bg-zinc-800 w-full rounded-md" 
+                    type="text" 
+                    name="title" 
+                    placeholder="Write title here"
+                >
+                <textarea 
+                    class="block mt-2 px-3 py-2 resize-none bg-zinc-800 w-full rounded-md" 
+                    name="note" 
+                    placeholder="Write note here"
+                ></textarea>
+                <input 
+                    class="mt-2 bg-blue-600 rounded-md px-5 py-2" 
+                    type="submit" 
+                    value="Create Task"
+                >
+            </form>
+        </div>
+
+        <div class="tasks flex p-10 gap-5 flex-wrap">
+            <% if (files && files.length > 0) { %>    
+                <% files.forEach(function(val) { %>
+                    <div class="task min-w-72 px-3 py-4 bg-zinc-800 rounded-md">
+                        <h1 class="text-white text-3xl tracking-tighter"><%= val.replace('.txt', '') %></h1>
+                        <div class="flex w-full justify-between mt-2">
+                            <a class="text-blue-500 inline-block" href="/file/<%= val %>" >Read More..</a>
+                            <a class="text-zinc-600 " href="/edit/<%= val %>">Edit filename</a>
+                        </div>
+                    </div>
+                <% }) %> 
+            <% } else { %>
+                <h3 class="text-zinc-600">No Task Yet...</h3>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
