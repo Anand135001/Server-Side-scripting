@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-// const cookieParser = require('cookie-parser');
-// app.use(cookieParser());
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 // app.get('/', (req, res) => {
 //   res.cookie("name", "anand");
@@ -34,6 +35,19 @@ app.get('/', (req, res) => {
       console.log(result);
     }
   );
+})
+
+// =========== Jwt token ============
+app.get('/', (req, res) => {
+  let Incrypt_token = jwt.sign({email: "anand@gmail.com"}, 'hide')
+  res.cookie("token", token);
+  res.send('hello');
+})
+
+app.get('/token', (req, res) => {
+  console.log(req.cookies.token);
+  let decrypt_token = jwt.verify(req.cookies.token, "hide");
+  console.log(decrypt_token);
 })
 
 app.listen(3000);
