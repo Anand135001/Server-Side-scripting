@@ -56,7 +56,7 @@ app.post('/login', async(req, res) => {
       if(result) {
         let token = jwt.sign({email, userid: user._id},'scretekey');
         res.cookie('token', token);
-        res.status(200).send("login successful");
+        res.status(200).redirect("/profile");
       }
       else res.redirect('/login');
   });
@@ -70,8 +70,8 @@ app.get("/logout", (req, res) => {
 
 
 app.get('/profile', isloggedIn, async(req, res) => {
-  console.log(req.user);     
-  res.send("login");
+  let user = await userModel.findOne({email: req.user.email});
+  res.render('profile', {user});
 });
 
 
