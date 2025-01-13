@@ -45,7 +45,7 @@ app.post('/create', async(req, res) => {
 
 app.get('/login', (req, res) => {
    res.render('login');
-})
+});
 
 app.post('/login', async(req, res) => {
   let { email, password } = req.body;
@@ -61,19 +61,30 @@ app.post('/login', async(req, res) => {
       else res.redirect('/login');
   });
 
-})
+});
 
 app.get("/logout", (req, res) => {
   res.clearCookie("token");
-  res.send("logged out");
+  res.redirect("/login");
 });
-
 
 app.get('/profile', isloggedIn, async(req, res) => {
   let user = await userModel.findOne({email: req.user.email});
   res.render('profile', {user});
 });
 
+app.post('/post', isloggedIn, async(req, res) => {
+    let user = await userModel.findOne({email: req.user.email});
+    
+    let post = postModel.create({
+      user: user._id,
+      content: req.body.content 
+    });
+
+    user.posts.push(post._id);
+    await user.save();
+    res.redirect('/profile');
+});
 
 function isloggedIn(req, res, next){
  try{
