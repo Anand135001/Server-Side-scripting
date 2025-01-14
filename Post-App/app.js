@@ -5,6 +5,7 @@ const userModel = require("./models/user");
 const postModel = require('./models/post');
 
 const express = require('express');
+const post = require('./models/post');
 const app = express();
 
 app.set("view engine", "ejs");
@@ -69,21 +70,22 @@ app.get("/logout", (req, res) => {
 });
 
 app.get('/profile', isloggedIn, async(req, res) => {
-  let user = await userModel.findOne({email: req.user.email});
+  let user = await userModel.findOne({email: req.user.email}).populate('posts');
   res.render('profile', {user});
 });
 
 app.post('/post', isloggedIn, async(req, res) => {
     let user = await userModel.findOne({email: req.user.email});
-    
-    let post = postModel.create({
+
+    let post = await postModel.create({
       user: user._id,
       content: req.body.content 
     });
 
-    user.posts.push(post._id);
+    await user.posts.push(post._id);
     await user.save();
     res.redirect('/profile');
+
 });
 
 function isloggedIn(req, res, next){
