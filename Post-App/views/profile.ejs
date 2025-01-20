@@ -9,8 +9,16 @@
 <body>
     <div class="w-full min-h-screen text-white p-10 bg-zinc-900">
         <div class="flex justify-between items-center">
-            <h4 class="text-3xl font-light">Hello <%= user.name %> !</h4>
-            <a class="bg-red-500 rounded-md px-3 py-2" href="/logout">Logout</a>
+            <div class="flex gap-3 ">
+                <div class="w-10 h-10 rounded-md overflow-hidden">
+                    <img class="w-full h-full object-cover" src="images/uploads/<%= user.profile %>" alt="img">
+                </div>
+                <h4 class="text-3xl font-light">Hello <%= user.name %> !</h4>
+            </div>
+            <div class="flex gap-3">
+                <a class="bg-orange-700 rounded-md px-3 py-2" href="/profile/upload">Upload DP</a> 
+                <a class="bg-red-500 rounded-md px-3 py-2" href="/logout">Logout</a>
+            </div>
         </div>
           
         <h4 class="mt-5 px-1">Create your Post :-</h4>
